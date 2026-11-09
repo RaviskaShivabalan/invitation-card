@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Registration Invitation | Shivabalan & Chandrasekaran</title>
+  
+  <style>
+    :root {
+      --bg-dark: #2C181A;
+      --gold: #C5A059;
+      --gold-light: #E2C98C;
+      --paper-cream: #FAF5EF;
+      --font-serif: 'Times New Roman', Times, serif;
+      
+      /* Red Accents */
+      --accent-red: #8B1E2B;
+      --accent-red-bright: #A32334;
+      --accent-red-light: #B83245;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #E8D8CD;
+      font-family: var(--font-serif);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 12px 60px;
+      color: var(--gold);
+      overflow-x: hidden;
+    }
+
+    /* WELCOME OVERLAY SCREEN */
+    #welcomeOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 40%, #3D1C21 0%, #170A0C 100%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      color: #fff;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #welcomeOverlay.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .welcome-title {
+      font-size: 0.88rem;
+      letter-spacing: 3px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .welcome-names {
+      font-style: italic;
+      font-size: 2.8rem;
+      color: #E25B6C; /* Elegant red accent */
+      line-height: 1.2;
+      margin-bottom: 30px;
+    }
+
+    .open-btn {
+      background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-red-bright) 100%);
+      color: #FFF;
+      border: 1px solid var(--gold);
+      padding: 15px 34px;
+      border-radius: 30px;
+      font-family: var(--font-serif);
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .open-btn:hover {
+      transform: scale(1.04);
+      background: linear-gradient(135deg, var(--accent-red-bright) 0%, var(--accent-red-light) 100%);
+    }
+
+    /* Falling Petals Canvas Overlay */
+    #petalCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Main Invitation Card Container */
+    .card-container {
+      width: 100%;
+      max-width: 440px;
+      background: var(--paper-cream);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(44, 24, 26, 0.25);
+      position: relative;
+      border: 1px solid rgba(139, 30, 43, 0.3);
+    }
+
+    /* Soft Natural Background Wash */
+    .card-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card-background::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: -20%;
+      width: 90%;
+      height: 60%;
+      background: radial-gradient(ellipse at 30% 30%, rgba(139, 30, 43, 0.08) 0%, transparent 70%);
+      filter: blur(25px);
+    }
+
+    /* Card Body Structure */
+    .card-body {
+      position: relative;
+      padding: 42px 24px 34px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .invitation-header {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      color: var(--accent-red);
+      line-height: 1.85;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      font-weight: bold;
+    }
+
+    /* Couple Names Layout */
+    .couple-names {
+      margin-bottom: 24px;
+    }
+
+    .family-name {
+      font-size: 1.25rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .first-name {
+      font-style: italic;
+      font-size: 2.9rem;
+      color: var(--accent-red); /* Changed to red */
+      line-height: 1.1;
+      margin-top: 2px;
+      margin-bottom: 6px;
+      font-weight: normal;
+      text-shadow: 0 1px 2px rgba(139, 30, 43, 0.15);
+    }
+
+    .ampersand {
+      font-style: italic;
+      font-size: 1.8rem;
+      color: var(--accent-red-bright); /* Changed to red */
+      margin: 2px 0;
+    }
+
+    .badge-wrapper {
+      margin-bottom: 6px;
+    }
+
+    .event-badge {
+      display: inline-block;
+      background: var(--accent-red); /* Red badge background */
+      color: #FFF;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      padding: 7px 20px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      border: 1px solid var(--gold);
+    }
+
+    .sub-event {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      color: var(--accent-red-bright); /* Changed to red */
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      font-weight: bold;
+    }
+
+    /* Date & Time Section */
+    .datetime-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid rgba(139, 30, 43, 0.2);
+      border-bottom: 1px solid rgba(139, 30, 43, 0.2);
+      padding: 12px 0;
+      margin-bottom: 24px;
+    }
+
+    .date-box, .time-box {
+      flex: 1;
+      color: var(--accent-red); /* Changed to red */
+      font-size: 2rem;
+      letter-spacing: 1.5px;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    .divider-line {
+      width: 1px;
+      height: 24px;
+      background: rgba(139, 30, 43, 0.2);
+    }
+
+    /* Venue Information */
+    .venue-container {
+      margin-bottom: 24px;
+      color: var(--accent-red-bright);
+      
+    }
+
+    .pin-icon {
+      color: var(--accent-red-bright); /* Red pin icon */
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+
+    .venue-name {
+      font-size: 1.15rem;
+      color: var(--gold);
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .venue-address {
+      font-size: 0.8rem;
+      color: var(--accent-red-bright);
+    }
+
+    /* RSVP Button */
+    .rsvp-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent-red) 0%, #63121C 100%); /* Red gradient button */
+      color: #FFF;
+      text-decoration: none;
+      font-family: var(--font-serif);
+      font-size: 0.82rem;
+      letter-spacing: 1.5px;
+      padding: 14px;
+      border-radius: 25px;
+      box-shadow: 0 4px 12px rgba(139, 30, 43, 0.35);
+      transition: transform 0.2s ease, background 0.2s ease;
+      font-weight: bold;
+      text-transform: uppercase;
+      border: 1px solid var(--gold);
+      cursor: pointer;
+    }
+
+    .rsvp-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--accent-red-bright) 0%, var(--accent-red) 100%);
+    }
+
+    .rsvp-subtext {
+      font-size: 0.72rem;
+      color: var(--accent-red); /* Changed to red */
+      margin-top: 6px;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    /* Secondary Navigation Buttons */
+    .secondary-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .btn-secondary {
+      flex: 1;
+      padding: 9px;
+      border: 1px solid var(--accent-red);
+      border-radius: 20px;
+      color: var(--accent-red); /* Changed to red */
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.2s ease;
+      background: rgba(139, 30, 43, 0.05);
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(139, 30, 43, 0.12);
+    }
+
+    /* Card Footer */
+    .card-footer {
+      border-top: 1px dashed rgba(139, 30, 43, 0.2);
+      padding-top: 18px;
+    }
+
+    .footer-note {
+      font-style:;
+      font-size: 1.5rem;
+      color: var(--accent-red); /* Changed to red */
+    }
+
+    .family-attribution {
+      font-size: 0.78rem;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .contact-pill {
+      display: inline-block;
+      border: 1px solid rgba(139, 30, 43, 0.3);
+      border-radius: 15px;
+      padding: 6px 18px;
+      font-size: 0.78rem;
+      color: var(--accent-red); /* Changed to red */
+      text-decoration: none;
+      font-weight: bold;
+      background: rgba(139, 30, 43, 0.05);
+    }
+
+    /* Floating Music Toggle */
+    .floating-music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent-red);
+      color: #FFF;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WELCOME OVERLAY SCREEN -->
+  <div id="welcomeOverlay">
+    <div class="welcome-title">Wedding Registration Invitation</div>
+    <div class="welcome-names">Raviska & Sri Mahisa</div>
+    <button class="open-btn" onclick="openInvitation()">Open Invitation</button>
+  </div>
+
+  <!-- FLOWER PETALS CANVAS OVERLAY -->
+  <canvas id="petalCanvas"></canvas>
+
+  <!-- WEDDING INVITATION CARD -->
+  <div class="card-container">
+    <div class="card-background"></div>
+
+    <div class="card-body">
+      <div class="invitation-header">
+        WE CORDIALLY INVITE YOU<br>
+        TO GRACE THE AUSPICIOUS OCCASION OF<br>
+        THE WEDDING REGISTRATION OF
+      </div>
+
+      <div class="couple-names">
+        <div class="family-name">SHIVABALAN</div>
+        <div class="first-name">Raviska</div>
+        <div class="ampersand">&</div>
+        <div class="family-name">CHANDRASEKARAN</div>
+        <div class="first-name">Sri Mahisa</div>
+      </div>
+
+      <div class="badge-wrapper">
+        <div class="event-badge">WEDDING REGISTRATION</div>
+      </div>
+      <div class="sub-event">AFTER CEREMONY</div>
+
+      <div class="datetime-container">
+        <div class="date-box">
+          <div id="displayDay">28.01.2027</div>
+          
+        </div>
+        <div class="divider-line"></div>
+        <div class="time-box">
+          <div id="displayTime">6:30PM</div>
+        </div>
+      </div>
+
+      <div class="venue-container">
+        <div class="pin-icon">📍</div>
+        <div class="venue-name">Wave Bolgoda</div>
+        <div class="venue-address">4 Upper Indibedda Rd, Moratuwa 10400</div>
+      </div>
+
+      <!-- DIRECT WHATSAPP RSVP BUTTON -->
+      <button class="rsvp-btn" onclick="sendWhatsAppRsvp()">
+        📋 Confirm Attendance (RSVP)
+      </button>
+      <div class="rsvp-subtext">Tap above to confirm your attendance directly via WhatsApp</div>
+
+      <div class="secondary-actions">
+        <a href="https://maps.google.com/?q=Wave+Bolgoda+Moratuwa" target="_blank" class="btn-secondary">Open Maps</a>
+        <a href="tel:0774879866" class="btn-secondary">Call Contact</a>
+      </div>
+
+      <div class="card-footer">
+        <div class="footer-note">With love,</div>
+        <div class="family-attribution">The Families of the Bride & Groom</div>
+        <a href="tel:0774879866" class="contact-pill">Contact Details - 0774879866</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING QUICK MUSIC TOGGLE -->
+  <button class="floating-music-btn" onclick="toggleAudio()" title="Toggle Music">🎵</button>
+
+  <!-- LOCAL HTML5 AUDIO ELEMENT -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="Sachet_Tandon_-_Ghantalele.com_-_Kudmayi_Ghantalele.com_(mp3.pm).mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- JAVASCRIPT CODE -->
+  <script>
+    const bgMusic = document.getElementById('bgMusic');
+    let isPlaying = false;
+
+    function openInvitation() {
+      const overlay = document.getElementById('welcomeOverlay');
+      overlay.classList.add('fade-out');
+
+      bgMusic.play().then(() => {
+        isPlaying = true;
+      }).catch((error) => {
+        console.log("Playback prevented:", error);
+      });
+    }
+
+    function toggleAudio() {
+      if (isPlaying) {
+        bgMusic.pause();
+        isPlaying = false;
+      } else {
+        bgMusic.play().then(() => {
+          isPlaying = true;
+        });
+      }
+    }
+
+    /* --- FLOWER PETALS FALLING ANIMATION --- */
+    const canvas = document.getElementById('petalCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const petals = [];
+    /* Updated petal colors to include red & gold accents */
+    const petalColors = ['rgba(139, 30, 43, 0.65)', 'rgba(197, 160, 89, 0.7)', 'rgba(163, 35, 52, 0.6)', 'rgba(226, 201, 140, 0.65)'];
+
+    for (let i = 0; i < 26; i++) {
+      petals.push({
+        x: Math.random() * width,
+        y: Math.random() * height - height,
+        size: Math.random() * 7 + 5,
+        speedY: Math.random() * 1.3 + 0.8,
+        speedX: Math.random() * 0.8 - 0.4,
+        angle: Math.random() * 360,
+        spin: Math.random() * 1.6 - 0.8,
+        color: petalColors[Math.floor(Math.random() * petalColors.length)]
+      });
+    }
+
+    function drawPetal(p) {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.angle * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-p.size, -p.size * 1.4, -p.size * 1.4, p.size, 0, p.size * 1.6);
+      ctx.bezierCurveTo(p.size * 1.4, p.size, p.size, -p.size * 1.4, 0, 0);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animatePetals() {
+      ctx.clearRect(0, 0, width, height);
+      petals.forEach(p => {
+        p.y += p.speedY;
+        p.x += Math.sin(p.y / 35) + p.speedX;
+        p.angle += p.spin;
+
+        if (p.y > height + 20) {
+          p.y = -20;
+          p.x = Math.random() * width;
+        }
+        drawPetal(p);
+      });
+      requestAnimationFrame(animatePetals);
+    }
+    animatePetals();
+
+    /* --- DIRECT WHATSAPP RSVP & URL PARAMETERS --- */
+    let currentGuestName = "";
+
+    function checkGuestNameFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const guestName = urlParams.get('name') || urlParams.get('guest');
+      if (guestName && guestName.trim() !== "") {
+        currentGuestName = guestName.trim();
+      }
+    }
+
+    function sendWhatsAppRsvp() {
+      const phoneNumber = "94774879866";
+      let rsvpText = "";
+      if (currentGuestName) {
+        rsvpText = `Hello Raviska & Sri Mahisa, I am confirming my attendance for your wedding registration! - ${currentGuestName}`;
+      } else {
+        rsvpText = "Hello Raviska & Sri Mahisa, I would like to confirm my attendance for your wedding registration!";
+      }
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(rsvpText)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    window.onload = function() {
+      checkGuestNameFromUrl();
+    };
+  </script>
+</body>
+</html>
